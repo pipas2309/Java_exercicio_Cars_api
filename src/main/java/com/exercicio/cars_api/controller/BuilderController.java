@@ -1,5 +1,6 @@
 package com.exercicio.cars_api.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -14,15 +15,14 @@ import com.exercicio.cars_api.repository.CarRepository;
 
 @RestController
 @RequestMapping("/api")
-
 public class BuilderController {
 
     @Autowired
     private CarRepository repository;
 
     @GetMapping(value = {"", "/", "/post"})
-    public ResponseEntity<String> justAMessage() {
-        return ResponseEntity.status(HttpStatusCode.valueOf(206)).body("Estamos testando o método POST, anjo de luz!");
+    public ResponseEntity<List<CarModel>> findAll() {
+        return ResponseEntity.status(HttpStatusCode.valueOf(202)).body(repository.findAll());
     }
     
     @PostMapping("/post")
