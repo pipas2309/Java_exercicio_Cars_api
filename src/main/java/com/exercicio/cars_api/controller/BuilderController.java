@@ -36,8 +36,9 @@ public class BuilderController {
     }
     
     @PostMapping("/post")
-    public void create(@RequestBody @Valid CarDTO req)  {
-        repository.save(new CarModel(req));
+    public ResponseEntity<CarModel> create(@RequestBody @Valid CarDTO req)  {
+        
+        return ResponseEntity.status(201).body(repository.save(new CarModel(req)));
     }
 
     @DeleteMapping("/{id}")
