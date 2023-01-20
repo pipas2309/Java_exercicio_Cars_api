@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,5 +41,18 @@ public class BuilderController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         repository.deleteById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<String> update(@PathVariable Long id, @RequestBody @Valid CarDTO req) {
+        repository.findById(id).map(details -> {
+            details.setModelo(req.modelo());
+            details.setFabricante(req.fabricante());
+            details.setDataFabricacao(req.dataFabricacao());
+            details.setValor(req.valor());
+            details.setAnoModelo(req.anoModelo());
+            return repository.save(details);
+        });
+        return ResponseEntity.accepted().body("Atualizado!");
     }
 }
