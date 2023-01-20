@@ -1,6 +1,8 @@
 package com.exercicio.cars_api.controller;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -45,7 +47,11 @@ public class BuilderController {
 
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable Long id, @RequestBody @Valid CarDTO req) {
-        repository.findById(id).map(details -> {
+        Optional<CarModel> car = repository.findById(id);
+
+        if(car.isEmpty()) return ResponseEntity.status(404).body("Atualizar o que, bb?");
+
+        car.map(details -> {
             details.setModelo(req.modelo());
             details.setFabricante(req.fabricante());
             details.setDataFabricacao(req.dataFabricacao());
